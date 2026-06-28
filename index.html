@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="心算练习" />
-  <title>心算练习</title>
+  <meta name="apple-mobile-web-app-title" content="Mental Math" />
+  <title>Mental Math</title>
 
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
       text-align: center;
       padding: 40px 20px;
       background: #f7f7f7;
@@ -80,18 +80,18 @@
 
 <body>
   <div class="card">
-    <h1>心算练习</h1>
-    <div class="subtitle">两位数加减法</div>
+    <h1>Mental Math</h1>
+    <div class="subtitle">Two-Digit Addition and Subtraction</div>
 
     <div id="question"></div>
 
-    <input id="answer" type="number" inputmode="numeric" placeholder="答案" />
+    <input id="answer" type="number" inputmode="numeric" placeholder="Answer" />
     <br />
 
-    <button onclick="checkAnswer()">提交答案</button>
+    <button onclick="checkAnswer()">Submit</button>
 
     <div id="feedback"></div>
-    <div id="score">正确：0　错误：0</div>
+    <div id="score">Correct: 0　Wrong: 0</div>
   </div>
 
   <script>
@@ -104,27 +104,27 @@
       return Math.floor(Math.random() * 90) + 10;
     }
 
-  function newQuestion() {
-    locked = false;
-  
-    do {
-      a = randomTwoDigitNumber();
-      b = randomTwoDigitNumber();
-      op = Math.random() < 0.5 ? "＋" : "－";
-  
-      if (op === "－" && a < b) {
-        [a, b] = [b, a]; // 避免出现负数
-      }
-  
-      correctAnswer = op === "＋" ? a + b : a - b;
-  
-    } while (correctAnswer < 0 || correctAnswer > 100);
-  
-    document.getElementById("question").textContent = `${a} ${op} ${b} ＝ ?`;
-    document.getElementById("answer").value = "";
-    document.getElementById("feedback").textContent = "";
-    document.getElementById("answer").focus();
-  }
+    function newQuestion() {
+      locked = false;
+
+      do {
+        a = randomTwoDigitNumber();
+        b = randomTwoDigitNumber();
+        op = Math.random() < 0.5 ? "+" : "-";
+
+        if (op === "-" && a < b) {
+          [a, b] = [b, a]; // Avoid negative answers
+        }
+
+        correctAnswer = op === "+" ? a + b : a - b;
+
+      } while (correctAnswer < 0 || correctAnswer > 100);
+
+      document.getElementById("question").textContent = `${a} ${op} ${b} = ?`;
+      document.getElementById("answer").value = "";
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("answer").focus();
+    }
 
     function checkAnswer() {
       if (locked) return;
@@ -133,7 +133,7 @@
       const userAnswer = Number(answerInput.value);
 
       if (answerInput.value === "") {
-        document.getElementById("feedback").textContent = "请先输入答案";
+        document.getElementById("feedback").textContent = "Please enter an answer";
         return;
       }
 
@@ -141,13 +141,13 @@
 
       if (userAnswer === correctAnswer) {
         right++;
-        document.getElementById("feedback").textContent = "✅ 答对了！";
+        document.getElementById("feedback").textContent = "✅ Correct!";
       } else {
         wrong++;
-        document.getElementById("feedback").textContent = `❌ 答错了，正确答案是 ${correctAnswer}`;
+        document.getElementById("feedback").textContent = `❌ Wrong. The correct answer is ${correctAnswer}`;
       }
 
-      document.getElementById("score").textContent = `正确：${right}　错误：${wrong}`;
+      document.getElementById("score").textContent = `Correct: ${right}　Wrong: ${wrong}`;
 
       setTimeout(newQuestion, 1000);
     }
