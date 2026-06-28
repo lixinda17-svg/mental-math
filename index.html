@@ -64,6 +64,16 @@
       background: #005ecb;
     }
 
+    #okButton {
+      display: none;
+      background: #34c759;
+      margin-left: 10px;
+    }
+
+    #okButton:active {
+      background: #248a3d;
+    }
+
     #feedback {
       font-size: 28px;
       margin-top: 24px;
@@ -88,7 +98,8 @@
     <input id="answer" type="number" inputmode="numeric" placeholder="Answer" />
     <br />
 
-    <button onclick="checkAnswer()">Submit</button>
+    <button id="submitButton" onclick="checkAnswer()">Submit</button>
+    <button id="okButton" onclick="goToNextQuestion()">OK</button>
 
     <div id="feedback"></div>
     <div id="score">Correct: 0　Wrong: 0</div>
@@ -123,6 +134,9 @@
       document.getElementById("question").textContent = `${a} ${op} ${b} = ?`;
       document.getElementById("answer").value = "";
       document.getElementById("feedback").textContent = "";
+      document.getElementById("okButton").style.display = "none";
+      document.getElementById("submitButton").style.display = "inline-block";
+      document.getElementById("answer").disabled = false;
       document.getElementById("answer").focus();
     }
 
@@ -142,14 +156,22 @@
       if (userAnswer === correctAnswer) {
         right++;
         document.getElementById("feedback").textContent = "✅ Correct!";
+        document.getElementById("score").textContent = `Correct: ${right}　Wrong: ${wrong}`;
+
+        setTimeout(newQuestion, 1000);
       } else {
         wrong++;
         document.getElementById("feedback").textContent = `❌ Wrong. The correct answer is ${correctAnswer}`;
+        document.getElementById("score").textContent = `Correct: ${right}　Wrong: ${wrong}`;
+
+        document.getElementById("submitButton").style.display = "none";
+        document.getElementById("okButton").style.display = "inline-block";
+        document.getElementById("answer").disabled = true;
       }
+    }
 
-      document.getElementById("score").textContent = `Correct: ${right}　Wrong: ${wrong}`;
-
-      setTimeout(newQuestion, 1000);
+    function goToNextQuestion() {
+      newQuestion();
     }
 
     document.getElementById("answer").addEventListener("keydown", function(event) {
