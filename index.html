@@ -1,126 +1,21 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="心算练习" />
-  <title>心算练习</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      text-align: center;
-      padding: 40px 20px;
-      background: #f7f7f7;
-    }
-    .card {
-      max-width: 420px;
-      margin: auto;
-      background: white;
-      border-radius: 24px;
-      padding: 30px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    }
-    h1 {
-      font-size: 28px;
-    }
-    #question {
-      font-size: 56px;
-      margin: 30px 0;
-      font-weight: bold;
-    }
-    input {
-      font-size: 32px;
-      width: 160px;
-      text-align: center;
-      padding: 10px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-    }
-    button {
-      font-size: 22px;
-      padding: 12px 24px;
-      margin: 12px 6px;
-      border: none;
-      border-radius: 14px;
-      background: #007aff;
-      color: white;
-    }
-    #feedback {
-      font-size: 26px;
-      margin-top: 20px;
-      min-height: 36px;
-    }
-    #score {
-      font-size: 18px;
-      color: #555;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>2位数加减法心算</h1>
-    <div id="question"></div>
+function newQuestion() {
+  locked = false;
 
-    <input id="answer" type="number" inputmode="numeric" placeholder="答案" />
-    <br />
+  do {
+    a = randomTwoDigitNumber();
+    b = randomTwoDigitNumber();
+    op = Math.random() < 0.5 ? "＋" : "－";
 
-    <button onclick="checkAnswer()">提交</button>
-    <button onclick="newQuestion()">下一题</button>
-
-    <div id="feedback"></div>
-    <div id="score">正确：0　错误：0</div>
-  </div>
-
-  <script>
-    let a, b, op, correctAnswer;
-    let right = 0;
-    let wrong = 0;
-
-    function randTwoDigit() {
-      return Math.floor(Math.random() * 90) + 10;
+    if (op === "－" && a < b) {
+      [a, b] = [b, a]; // 避免出现负数
     }
 
-    function newQuestion() {
-      a = randTwoDigit();
-      b = randTwoDigit();
-      op = Math.random() < 0.5 ? "+" : "-";
+    correctAnswer = op === "＋" ? a + b : a - b;
 
-      if (op === "-" && a < b) {
-        [a, b] = [b, a]; // 避免负数
-      }
+  } while (correctAnswer < 0 || correctAnswer > 100);
 
-      correctAnswer = op === "+" ? a + b : a - b;
-
-      document.getElementById("question").textContent = `${a} ${op} ${b} = ?`;
-      document.getElementById("answer").value = "";
-      document.getElementById("feedback").textContent = "";
-      document.getElementById("answer").focus();
-    }
-
-    function checkAnswer() {
-      const userAnswer = Number(document.getElementById("answer").value);
-
-      if (userAnswer === correctAnswer) {
-        right++;
-        document.getElementById("feedback").textContent = "✅ 对了！";
-        setTimeout(newQuestion, 700);
-      } else {
-        wrong++;
-        document.getElementById("feedback").textContent = `❌ 再想想，正确答案是 ${correctAnswer}`;
-      }
-
-      document.getElementById("score").textContent = `正确：${right}　错误：${wrong}`;
-    }
-
-    document.getElementById("answer").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        checkAnswer();
-      }
-    });
-
-    newQuestion();
-  </script>
-</body>
-</html>
+  document.getElementById("question").textContent = `${a} ${op} ${b} ＝ ?`;
+  document.getElementById("answer").value = "";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("answer").focus();
+}
