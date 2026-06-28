@@ -104,27 +104,27 @@
       return Math.floor(Math.random() * 90) + 10;
     }
 
-function newQuestion() {
-  locked = false;
-
-  do {
-    a = randomTwoDigitNumber();
-    b = randomTwoDigitNumber();
-    op = Math.random() < 0.5 ? "＋" : "－";
-
-    if (op === "－" && a < b) {
-      [a, b] = [b, a]; // 避免出现负数
-    }
-
-    correctAnswer = op === "＋" ? a + b : a - b;
-
-  } while (correctAnswer < 0 || correctAnswer > 100);
-
-  document.getElementById("question").textContent = `${a} ${op} ${b} ＝ ?`;
-  document.getElementById("answer").value = "";
-  document.getElementById("feedback").textContent = "";
-  document.getElementById("answer").focus();
-}
+  function newQuestion() {
+    locked = false;
+  
+    do {
+      a = randomTwoDigitNumber();
+      b = randomTwoDigitNumber();
+      op = Math.random() < 0.5 ? "＋" : "－";
+  
+      if (op === "－" && a < b) {
+        [a, b] = [b, a]; // 避免出现负数
+      }
+  
+      correctAnswer = op === "＋" ? a + b : a - b;
+  
+    } while (correctAnswer < 0 || correctAnswer > 100);
+  
+    document.getElementById("question").textContent = `${a} ${op} ${b} ＝ ?`;
+    document.getElementById("answer").value = "";
+    document.getElementById("feedback").textContent = "";
+    document.getElementById("answer").focus();
+  }
 
     function checkAnswer() {
       if (locked) return;
